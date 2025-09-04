@@ -100,7 +100,7 @@
       };
 
       try {
-        const response = await fetch("https://abyss.balanghai.com.ph/webhook-test/contact-form", {
+        const response = await fetch("https://abyss.balanghai.com.ph/webhook-test/contact-form?form=submit", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData)
@@ -119,3 +119,4 @@
   </script>
 </body>
 </html>
+
