@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      padding: 40px;
+    }
+    .form-container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .form-container h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0070f3;
+      color: #fff;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #0056c1;
+    }
+    .status {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Contact Us</h2>
+    <form id="contactForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="purpose">Purpose</label>
+      <select id="purpose" name="purpose" required>
+        <option value="">-- Select Purpose --</option>
+        <option value="Inquiry">Inquiry</option>
+        <option value="Support">Support</option>
+        <option value="Feedback">Feedback</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("contactForm");
+    const statusEl = document.getElementById("status");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusEl.textContent = "Sending...";
+
+      const formData = {
+        name: form.name.value,
+        email: form.email.value,
+        purpose: form.purpose.value,
+        message: form.message.value
+      };
+
+      try {
+        const response = await fetch("https://abyss.balanghai.com.ph/webhook-test/contact-form", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          statusEl.textContent = "✅ Your message has been sent!";
+          form.reset();
+        } else {
+          statusEl.textContent = "⚠️ Failed to send. Try again.";
+        }
+      } catch (error) {
+        statusEl.textContent = "❌ Error: " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
